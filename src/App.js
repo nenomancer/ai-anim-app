@@ -1,7 +1,16 @@
 import react, { Fragment, useState, useEffect } from "react";
 
 function App() {
-  const [keyframes, setKeyframes] = useState(["0", "40"]);
+  const [keyframes, setKeyframes] = useState([
+    {
+      key: 1,
+      frame: 0,
+    },
+    {
+      key: 2,
+      frame: 40,
+    },
+  ]);
   const [prompts, setPrompts] = useState(() => {
     // use saved prompts as the initial state
     const savedPrompts = localStorage.getItem("prompts");
@@ -78,6 +87,7 @@ function App() {
 
   return (
     <div className="container">
+      {/* displaying the prompt column */}
       <ul className="prompts-container">
         {prompts.map((prompt) => (
           <li key={prompt.id}>
@@ -88,30 +98,38 @@ function App() {
             </button>
           </li>
         ))}
+        {isEditing ? (
+          <form onSubmit={editPromptSubmitHandler}>
+            <h2>Edit Prompt</h2>
+            <label htmlFor="editPrompt">Edit prompt: </label>
+            <input
+              name="editPrompt"
+              type="text"
+              placeholder="Edit prompt"
+              value={editPrompt.text}
+              onChange={editPromptInputChangeHandler}
+            ></input>
+          </form>
+        ) : (
+          <form onSubmit={formSubmitHandler}>
+            <input
+              name="prompt"
+              type="text"
+              placeholder="Create a new prompt"
+              value={prompt}
+              onChange={inputChangeHandler}
+            />
+          </form>
+        )}
       </ul>
-      {isEditing ? (
-        <form onSubmit={editPromptSubmitHandler}>
-          <h2>Edit Prompt</h2>
-          <label htmlFor="editPrompt">Edit prompt: </label>
-          <input
-            name="editPrompt"
-            type="text"
-            placeholder="Edit prompt"
-            value={editPrompt.text}
-            onChange={editPromptInputChangeHandler}
-          ></input>
-        </form>
-      ) : (
-        <form onSubmit={formSubmitHandler}>
-          <input
-            name="prompt"
-            type="text"
-            placeholder="Create a new prompt"
-            value={prompt}
-            onChange={inputChangeHandler}
-          />
-        </form>
-      )}
+      
+    
+      {/* displaying the first keyframe column */}
+      <ul className="keyframe-column">
+        {prompts.map((prompt) => (
+          <li key={prompt.id}>0</li>
+        ))}
+      </ul>
     </div>
   );
 }
