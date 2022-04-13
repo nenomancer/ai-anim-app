@@ -1,0 +1,20 @@
+.container {
+    background-color: beige;
+    max-width: 960px;
+    margin: 5rem auto;
+    border: 1px solid black;
+    border-radius: .5rem;
+    display: flex;
+}
+
+.container li {
+    list-style: none;
+}
+
+.keyframe-column {
+    background-color: wheat;
+}
+
+.keyframe-frame {
+    font-weight: bold;
+}
