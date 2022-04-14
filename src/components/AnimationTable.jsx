@@ -97,7 +97,14 @@ const AnimationTable = () => {
     ]);
   };
 
-  
+  const deleteKeyframeHandler = (e) => {
+    const filteredColumns = keyframes.filter((keyframe) => {
+      // console.log(keyframe);
+      return keyframe.key !== e + 1;
+    })
+
+    setKeyframes(filteredColumns);
+  }
 
   return (
     <div className="container">
@@ -106,7 +113,7 @@ const AnimationTable = () => {
         <li>Prompt | Frame</li>
         {prompts.map((prompt) => (
           <li key={prompt.id}>
-            {prompt.text}{" "}
+            {prompt.text}
             <button onClick={() => editClickHandler(prompt)}>Edit</button>
             <button onClick={() => deleteClickHandler(prompt.id)}>
               Delete
@@ -137,12 +144,13 @@ const AnimationTable = () => {
           </form>
         )}
       </ul>
-      {keyframes.map((keyframe) => (
+      {keyframes.map((keyframe, index) => (
         <KeyframeColumn
+          index={index}
           prompts={prompts}
+          deleteKeyframeHandler={deleteKeyframeHandler}
           frame={keyframe.frame}
           key={keyframe.key}
-          deleteAnimationColumnHandler={deleteAnimationColumnHandler}
         />
       ))}
       <button onClick={addKeyframeHandler}>Add Keyframe</button>

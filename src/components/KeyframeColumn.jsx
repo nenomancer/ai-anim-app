@@ -1,20 +1,9 @@
 import react, { useState } from "react";
 
-const KeyframeColumn = ({ prompts, frame }) => {
-  const [keyframes, setKeyframes] = useState(() => {});
-
-  const deleteAnimationColumnHandler = (e) => {
-    console.log(e.target);
-    // const filteredColumn = keyframes.filter((keyframe) => {
-    //   return keyframe.key !== index;
-    // });
-
-    // setKeyframes(filteredColumn);
-  };
-
+const KeyframeColumn = ({ prompts, index, frame, deleteKeyframeHandler }) => {
   return (
     <ul className="keyframe-column">
-      <button onClick={deleteAnimationColumnHandler}>-</button>
+      <button onClick={() => deleteKeyframeHandler(index)}>-</button>
       <li className="keyframe-frame">{frame}</li>
       {prompts.map((prompt) => (
         <li className="keyframe-value" key={prompt.id}>

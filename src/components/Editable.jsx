@@ -11,13 +11,13 @@ const Editable = ({ text, type, placeholder, children, ...props }) => {
     <section {...props}>
       {isEditing ? (
         <div
-          onBlur={() => setEditing(false)}
+          onBlur={() => setIsEditing(false)}
           onKeyDown={(e) => handleKeyDown(e, type)}
         >
           {children}
         </div>
       ) : (
-        <div>
+        <div onClick={() => setIsEditing(true)}>
           <span>{text || placeholder || "editable content"}</span>
         </div>
       )}
