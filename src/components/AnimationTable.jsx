@@ -101,10 +101,10 @@ const AnimationTable = () => {
     const filteredColumns = keyframes.filter((keyframe) => {
       // console.log(keyframe);
       return keyframe.key !== e + 1;
-    })
+    });
 
     setKeyframes(filteredColumns);
-  }
+  };
 
   return (
     <div className="container">
