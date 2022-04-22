@@ -24,7 +24,6 @@ const AnimationTable = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editPrompt, setEditPrompt] = useState({});
-
   const [prompt, setPrompt] = useState("");
 
   // save prompts to local storage
@@ -110,16 +109,31 @@ const AnimationTable = () => {
     <div className="container">
       {/* displaying the prompt column */}
       <ul className="prompts-column">
-        <li>Prompt | Frame</li>
-        {prompts.map((prompt) => (
-          <li key={prompt.id}>
-            {prompt.text}
-            <button onClick={() => editClickHandler(prompt)}>Edit</button>
-            <button onClick={() => deleteClickHandler(prompt.id)}>
-              Delete
-            </button>
-          </li>
-        ))}
+        <div className="prompts-help">
+          <span>Prompts</span>
+          <span>Frames</span>
+        </div>
+        <div className="prompts-container">
+          {prompts.map((prompt) => (
+            <li className="prompts-row" key={prompt.id}>
+              <button
+                className="prompts-btn"
+                onClick={() => deleteClickHandler(prompt.id)}
+              >
+                X
+              </button>
+              {prompt.text}
+              <div>
+                {/* <button
+                  className="prompts-btn"
+                  onClick={() => editClickHandler(prompt)}
+                >
+                  Edit
+                </button> */}
+              </div>
+            </li>
+          ))}
+        </div>
         {isEditing ? (
           <form onSubmit={editPromptSubmitHandler}>
             <h2>Edit Prompt</h2>
@@ -154,7 +168,13 @@ const AnimationTable = () => {
         />
       ))}
       <button onClick={addKeyframeHandler}>Add Keyframe</button>
-
+      {/* <div className="animation-result">
+        <p>
+          {keyframes[0].frame}:({prompts[0].text}: 1 | {prompts[1].text}: 0 |{" "}
+          {prompts[2].text}: 0), {keyframes[1].frame}:({prompts[0].text}: 0 |{" "}
+          {prompts[1].text}: 1 | {prompts[2].text}: 0)
+        </p>
+      </div> */}
       {/* displaying the first keyframe column */}
     </div>
   );

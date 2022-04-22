@@ -1,26 +1,33 @@
-import react, { useState } from "react";
-import Editable from "./Editable";
+import react, { useEffect, useState } from "react";
+import Keyframe from "./Keyframe";
 
 const KeyframeColumn = ({ prompts, index, frame, deleteKeyframeHandler }) => {
-  const [keyframe, setKeyframe] = useState([]);
+  // let keyframes = [];
+  // for (const prompt of prompts) {
+  //   keyframes.push(prompt.id)
+  // }
+  // console.log(keyframes);
+  const [values, setValues] = useState(() => {
+    const savedValues = localStorage.getItem("prompts");
+    if (savedValues) {
+      return JSON.parse(savedValues);
+    } else {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("values", JSON.stringify(values));
+  }, [values]);
 
   return (
     <ul className="keyframe-column">
-      <button onClick={() => deleteKeyframeHandler(index)}>-</button>
-      <li className="keyframe-frame">{frame}</li>
-      {prompts.map((prompt) => (
-        <Editable
-          text="0"
-          type="input"
-          key={Math.random()}
-        >
-          <input
-            type="text"
-            name="key"
-            value={keyframe}
-            onChange={(e) => setKeyframe(e.target.value)}
-          />
-        </Editable>
+      <div className="keyframe-help">
+        <li>{frame}</li>
+        <button onClick={() => deleteKeyframeHandler(index)}>X</button>
+      </div>
+      {prompts.map((prompt, index) => (
+        <Keyframe key={Math.random()} index={index} />
       ))}
     </ul>
   );

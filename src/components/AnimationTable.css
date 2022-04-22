@@ -2,6 +2,7 @@
     background-color: beige;
     max-width: 960px;
     margin: 5rem auto;
+    padding: .5rem;
     border: 1px solid black;
     border-radius: .5rem;
     display: flex;
@@ -11,10 +12,66 @@
     list-style: none;
 }
 
-.keyframe-column {
-    background-color: wheat;
+.keyframe-help {
+    width: 3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.keyframe-frame {
-    font-weight: bold;
+.keyframe-help > button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.keyframe-help > button:hover{
+    background-color: #d3d3d3;
+
+}
+
+.prompts-column, .keyframe-column {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+}
+
+.prompts-row, .keyframe-row {
+    height: 1.5rem;
+    padding: .5rem;
+    margin-bottom: .25rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.prompts-help, .keyframe-help {
+    height: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+}
+
+input:hover {
+    background-color: #d3d3d3;
+    cursor: pointer;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
