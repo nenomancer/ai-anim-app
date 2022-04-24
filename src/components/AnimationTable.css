@@ -8,10 +8,6 @@
     display: flex;
 }
 
-.container li {
-    list-style: none;
-}
-
 .keyframe-help {
     width: 3rem;
     font-weight: bold;
@@ -35,6 +31,14 @@
     display: flex;
     flex-direction: column;
     padding: 1rem 2rem;
+}
+
+.prompts-container, .keyframe-container {
+    margin-top: 1rem;
+}
+
+.prompt {
+    display: flex;
 }
 
 .inline-data {

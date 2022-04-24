@@ -1,35 +1,41 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import InlineEdit from "./InlineEdit";
 import Keyframe from "./Keyframe";
 
-const KeyframeColumn = ({ prompts, index, frame, deleteKeyframeHandler }) => {
-  // let keyframes = [];
-  // for (const prompt of prompts) {
-  //   keyframes.push(prompt.id)
-  // }
-  // console.log(keyframes);
-  const [values, setValues] = useState(() => {
-    const savedValues = localStorage.getItem("prompts");
-    if (savedValues) {
-      return JSON.parse(savedValues);
-    } else {
-      return [];
-    }
-  });
+const KeyframeColumn = (props) => {
+  // INITIALIZING KEYFRAMES ARRAY
+  const keyframes = [];
+  for (let i = 1; i <= props.prompts.length; i++) {
+    keyframes.push("0");
+  }
 
-  useEffect(() => {
-    localStorage.setItem("values", JSON.stringify(values));
-  }, [values]);
+  // USING KEYFRAMES ARRAY AS DEFAULT STATE
+  const [keyframeValues, setKeyframeValues] = useState(keyframes);
+
+  // FRAME NUMBER STATE
+  const [frame, setFrame] = useState(props.frame);
 
   return (
-    <ul className="keyframe-column">
+    <div className="keyframe-column">
+      {/* RENDERING FRAME NUMBER ON TOP */}
       <div className="keyframe-help">
-        <li>{frame}</li>
-        <button onClick={() => deleteKeyframeHandler(index)}>X</button>
+        <InlineEdit
+          className="keyframe-frame"
+          type="number"
+          size="1"
+          value={frame}
+          setValue={setFrame}
+        />
+        <button onClick={() => props.deleteKeyframeHandler(props.index)}>
+          X
+        </button>
       </div>
-      {prompts.map((prompt, index) => (
-        <Keyframe key={Math.random()} index={index} />
-      ))}
-    </ul>
+      <div className="keyframe-container">
+        {keyframeValues.map((value, index) => (
+          <Keyframe key={Math.random()} index={index} value={value} />
+        ))}
+      </div>
+    </div>
   );
 };
 

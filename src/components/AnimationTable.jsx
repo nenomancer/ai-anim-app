@@ -4,37 +4,48 @@ import KeyframeColumn from "./KeyframeColumn";
 import PromptColumn from "./PromptColumn";
 
 const AnimationTable = () => {
-  const [keyframes, setKeyframes] = useState([
-    {
-      key: 1,
-      frame: 0,
-    },
-    {
-      key: 2,
-      frame: 40,
-    },
-  ]);
-
-  const [prompts, setPrompts] = useState(() => {
-  // use saved prompts as the initial state
-  const savedPrompts = localStorage.getItem("prompts");
-  if (savedPrompts) {
-    return JSON.parse(savedPrompts);
-  } else {
-    return [];
-  }
+  // STATE TO KEEP TRACK OF KEYFRAMES
+  const [keyframes, setKeyframes] = useState(() => {
+    const savedKeyframes = localStorage.getItem("keyframes");
+    if (savedKeyframes) {
+      return JSON.parse(savedKeyframes);
+    } else {
+      return ["0", "50", "100", "150"];
+    }
   });
 
-  // save prompts to local storage
+  // SAVE KEYFRAMES TO LOCAL STORAGE
+  useEffect(() => {
+    localStorage.setItem("keyframes", JSON.stringify(keyframes));
+  }, [keyframes]);
+
+  // STATE TO KEEP TRACK OF PROMPTS
+  const [prompts, setPrompts] = useState(() => {
+    // USE SAVED PROMPTS AS DEFAULT STATE
+    const savedPrompts = localStorage.getItem("prompts");
+    if (savedPrompts) {
+      return JSON.parse(savedPrompts);
+    } else {
+      return ["prompt1", "prompt2"];
+    }
+  });
+
+  // SAVE PROMPTS TO LOCAL STORAGE:
   useEffect(() => {
     localStorage.setItem("prompts", JSON.stringify(prompts));
   }, [prompts]);
 
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [editPrompt, setEditPrompt] = useState({});
+  // DELETE PROMPT
+  const deletePromptHandler = (selectedPrompt) => {
+    // FILTER OUT THE SELECTED PROMPT
+    const removePrompt = prompts.filter((prompt) => {
+      return selectedPrompt !== prompt;
+    });
+    // SET FILTERED PROMPTS AS NEW STATE
+    setPrompts(removePrompt);
+  };
 
-  const [prompt, setPrompt] = useState("");
-
+  // ADD KEYFRAME
   const addKeyframeHandler = (e) => {
     setKeyframes([
       ...keyframes,
@@ -56,7 +67,11 @@ const AnimationTable = () => {
 
   return (
     <div className="container">
-      <PromptColumn prompts={prompts} />
+      <PromptColumn
+        prompts={prompts}
+        setPrompts={setPrompts}
+        deletePromptHandler={deletePromptHandler}
+      />
 
       {/* display keyframe columns  */}
       {keyframes.map((keyframe, index) => (
@@ -64,8 +79,8 @@ const AnimationTable = () => {
           index={index}
           prompts={prompts}
           deleteKeyframeHandler={deleteKeyframeHandler}
-          frame={keyframe.frame}
-          key={keyframe.key}
+          frame={keyframe}
+          key={Math.floor(Math.random() * 10000) + 1}
         />
       ))}
       <button onClick={addKeyframeHandler}>Add Keyframe</button>

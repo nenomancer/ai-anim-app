@@ -1,15 +1,10 @@
-import react, { Fragment } from "react";
+import react, { Fragment, useState } from "react";
 import InlineEdit from "./InlineEdit";
 import Prompt from "./Prompt";
 
-const PromptColumn = ({ prompts }) => {
-//   const deleteClickHandler = (index) => {
-//     const removePrompt = props.prompts.filter((prompt) => {
-//       return prompt.id !== index;
-//     });
+const PromptColumn = (props) => {
+  const [newPrompt, setNewPrompt] = useState("");
 
-//     setPrompts(removePrompt);
-//   };
   return (
     <Fragment>
       {/* displaying the prompt column */}
@@ -19,9 +14,28 @@ const PromptColumn = ({ prompts }) => {
           <span>Frames</span>
         </div>
         <div className="prompts-container">
-          {prompts.map((prompt) => (
-            <Prompt key={Math.random()} prompt={prompt} />
+          {props.prompts.map((prompt, index) => (
+            <Prompt
+              key={Math.floor(Math.random() * 100000) + 1}
+              index={index}
+              prompt={prompt}
+              prompts={props.prompts}
+              setPrompts={props.setPrompts}
+              deletePromptHandler={props.deletePromptHandler}
+            />
           ))}
+          <InlineEdit
+            type="text"
+            placeholder="Enter a new Prompt"
+            tag="newPrompt"
+            prompts={props.prompts}
+            setPrompts={props.setPrompts}
+            value={newPrompt}
+            setValue={setNewPrompt}
+            onClick={() => {
+              console.log("gaz");
+            }}
+          />
         </div>
       </div>
     </Fragment>
