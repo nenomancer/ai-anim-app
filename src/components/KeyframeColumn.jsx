@@ -13,7 +13,7 @@ const KeyframeColumn = (props) => {
   const [keyframeValues, setKeyframeValues] = useState(keyframes);
 
   // FRAME NUMBER STATE
-  const [frame, setFrame] = useState(props.frame);
+  const [frame, setFrame] = useState(props.keyframe);
 
   return (
     <div className="keyframe-column">
@@ -26,13 +26,13 @@ const KeyframeColumn = (props) => {
           value={frame}
           setValue={setFrame}
         />
-        <button onClick={() => props.deleteKeyframeHandler(props.index)}>
+        <button onClick={() => props.deleteKeyframeHandler(props.keyframe)}>
           X
         </button>
       </div>
       <div className="keyframe-container">
         {keyframeValues.map((value, index) => (
-          <Keyframe key={Math.random()} index={index} value={value} />
+          <Keyframe key={Math.random()} keyframe value={value} />
         ))}
       </div>
     </div>

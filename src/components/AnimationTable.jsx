@@ -4,21 +4,6 @@ import KeyframeColumn from "./KeyframeColumn";
 import PromptColumn from "./PromptColumn";
 
 const AnimationTable = () => {
-  // STATE TO KEEP TRACK OF KEYFRAMES
-  const [keyframes, setKeyframes] = useState(() => {
-    const savedKeyframes = localStorage.getItem("keyframes");
-    if (savedKeyframes) {
-      return JSON.parse(savedKeyframes);
-    } else {
-      return ["0", "50", "100", "150"];
-    }
-  });
-
-  // SAVE KEYFRAMES TO LOCAL STORAGE
-  useEffect(() => {
-    localStorage.setItem("keyframes", JSON.stringify(keyframes));
-  }, [keyframes]);
-
   // STATE TO KEEP TRACK OF PROMPTS
   const [prompts, setPrompts] = useState(() => {
     // USE SAVED PROMPTS AS DEFAULT STATE
@@ -36,33 +21,55 @@ const AnimationTable = () => {
   }, [prompts]);
 
   // DELETE PROMPT
-  const deletePromptHandler = (selectedPrompt) => {
+  const deletePromptHandler = (selectedIndex) => {
     // FILTER OUT THE SELECTED PROMPT
-    const removePrompt = prompts.filter((prompt) => {
-      return selectedPrompt !== prompt;
-    });
+    console.log(selectedIndex);
+    console.log(prompts[selectedIndex]);
+    const filteredPrompts = [];
+    for (let i = 0; i < prompts.length; i++) {
+      if (i !== selectedIndex) {
+        filteredPrompts.push(prompts[i]);
+      }
+    }
     // SET FILTERED PROMPTS AS NEW STATE
-    setPrompts(removePrompt);
+    console.log(filteredPrompts);
+    setPrompts(filteredPrompts);
   };
+
+  // STATE TO KEEP TRACK OF KEYFRAMES
+  const [keyframes, setKeyframes] = useState(() => {
+    const savedKeyframes = localStorage.getItem("keyframes");
+    if (savedKeyframes) {
+      return JSON.parse(savedKeyframes);
+    } else {
+      return ["0", "50", "100", "150"];
+    }
+  });
+
+  // SAVE KEYFRAMES TO LOCAL STORAGE
+  useEffect(() => {
+    localStorage.setItem("keyframes", JSON.stringify(keyframes));
+    // console.log("Keyframe has been changed");
+  }, [keyframes]);
 
   // ADD KEYFRAME
   const addKeyframeHandler = (e) => {
-    setKeyframes([
-      ...keyframes,
-      {
-        key: keyframes.length + 1,
-        frame: 0,
-      },
-    ]);
+    // SPREAD PREVIOUS KEYFRAMES, SET NEW ONE AS 0
+    const newKeyframe = keyframes[keyframes.length - 1];
+    console.log(newKeyframe);
+    const newKeyframes = [...keyframes, "0"];
+    setKeyframes(newKeyframes);
   };
 
-  const deleteKeyframeHandler = (e) => {
+  // DELETE KEYFRAME
+  const deleteKeyframeHandler = (selectedKeyframe) => {
     const filteredColumns = keyframes.filter((keyframe) => {
-      // console.log(keyframe);
-      return keyframe.key !== e + 1;
+      return selectedKeyframe !== keyframe;
     });
-
-    setKeyframes(filteredColumns);
+    // setKeyframes(filteredColumns);
+    console.log(
+      `filteredColumns: ${filteredColumns}, selectedKeyframe: ${selectedKeyframe}`
+    );
   };
 
   return (
@@ -74,12 +81,11 @@ const AnimationTable = () => {
       />
 
       {/* display keyframe columns  */}
-      {keyframes.map((keyframe, index) => (
+      {keyframes.map((keyframe) => (
         <KeyframeColumn
-          index={index}
           prompts={prompts}
           deleteKeyframeHandler={deleteKeyframeHandler}
-          frame={keyframe}
+          keyframe={keyframe}
           key={Math.floor(Math.random() * 10000) + 1}
         />
       ))}
