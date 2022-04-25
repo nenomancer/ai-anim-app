@@ -8,7 +8,6 @@ const KeyframeColumn = (props) => {
   for (let i = 1; i <= props.prompts.length; i++) {
     keyframes.push("0");
   }
-
   // USING KEYFRAMES ARRAY AS DEFAULT STATE
   const [keyframeValues, setKeyframeValues] = useState(keyframes);
 
@@ -17,22 +16,29 @@ const KeyframeColumn = (props) => {
 
   return (
     <div className="keyframe-column">
-      {/* RENDERING FRAME NUMBER ON TOP */}
+      {/* SHOW FRAME NUMBER ON TOP */}
       <div className="keyframe-help">
+        <button className="btn-delete" onClick={() => props.deleteKeyframeHandler(props.index)}>
+          Delete
+        </button>
         <InlineEdit
           className="keyframe-frame"
           type="number"
           size="1"
           value={frame}
           setValue={setFrame}
+          dataType="keyframe-column"
         />
-        <button onClick={() => props.deleteKeyframeHandler(props.keyframe)}>
-          X
-        </button>
       </div>
+      {/* SHOW KEYFRAME VALUES  */}
       <div className="keyframe-container">
         {keyframeValues.map((value, index) => (
-          <Keyframe key={Math.random()} keyframe value={value} />
+          <Keyframe
+            key={Math.random()}
+            index={index}
+            value={value}
+            className="keyframe"
+          />
         ))}
       </div>
     </div>

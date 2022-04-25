@@ -28,13 +28,12 @@ const PromptColumn = (props) => {
             type="text"
             placeholder="Enter a new Prompt"
             tag="newPrompt"
+            className="prompts-new"
             prompts={props.prompts}
             setPrompts={props.setPrompts}
             value={newPrompt}
             setValue={setNewPrompt}
-            onClick={() => {
-              console.log("gaz");
-            }}
+            dataType="prompts-new"
           />
         </div>
       </div>

@@ -6,10 +6,21 @@ const Prompt = (props) => {
 
   return (
     <div className="prompt">
-      <button onClick={() => props.deletePromptHandler(props.index)}>
+      <button
+        className="btn-delete"
+        onClick={() => props.deletePromptHandler(props.index)}
+      >
         Delete
       </button>
-      <InlineEdit value={value} setValue={setValue} type="text" />
+      <InlineEdit
+        value={value}
+        setValue={setValue}
+        index={props.index}
+        prompts={props.prompts}
+        setPrompts={props.setPrompts}
+        type="text"
+        dataType="prompts-value"
+      />
     </div>
   );
 };

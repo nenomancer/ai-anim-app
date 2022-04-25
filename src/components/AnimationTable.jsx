@@ -15,6 +15,10 @@ const AnimationTable = () => {
     }
   });
 
+  // STATE TO KEEP TRACK OF INDIVIDUAL PROMPT TEXT
+  // THIS NEEDS TO BE WORKED ON
+  const [promptText, setPromptText] = useState("");
+
   // SAVE PROMPTS TO LOCAL STORAGE:
   useEffect(() => {
     localStorage.setItem("prompts", JSON.stringify(prompts));
@@ -22,12 +26,12 @@ const AnimationTable = () => {
 
   // DELETE PROMPT
   const deletePromptHandler = (selectedIndex) => {
-    // FILTER OUT THE SELECTED PROMPT
-    console.log(selectedIndex);
-    console.log(prompts[selectedIndex]);
+    // NEW ARRAY FOR FILTERED PROMPTS
     const filteredPrompts = [];
+    // ITERATE THROUGH ALL PROMPTS
     for (let i = 0; i < prompts.length; i++) {
       if (i !== selectedIndex) {
+        // ADD ALL PROMPTS EXCEPT SELECTED INTO NEW ARRAY
         filteredPrompts.push(prompts[i]);
       }
     }
@@ -49,7 +53,7 @@ const AnimationTable = () => {
   // SAVE KEYFRAMES TO LOCAL STORAGE
   useEffect(() => {
     localStorage.setItem("keyframes", JSON.stringify(keyframes));
-    // console.log("Keyframe has been changed");
+    console.log("Keyframe has been changed");
   }, [keyframes]);
 
   // ADD KEYFRAME
@@ -57,20 +61,28 @@ const AnimationTable = () => {
     // SPREAD PREVIOUS KEYFRAMES, SET NEW ONE AS 0
     const newKeyframe = keyframes[keyframes.length - 1];
     console.log(newKeyframe);
-    const newKeyframes = [...keyframes, "0"];
+    const newKeyframes = [...keyframes, "1"];
     setKeyframes(newKeyframes);
   };
 
   // DELETE KEYFRAME
   const deleteKeyframeHandler = (selectedKeyframe) => {
-    const filteredColumns = keyframes.filter((keyframe) => {
-      return selectedKeyframe !== keyframe;
-    });
-    // setKeyframes(filteredColumns);
+    const newKeyframes = [];
+    for (let i = 0; i < keyframes.length; i++) {
+      if (i !== selectedKeyframe) {
+        newKeyframes.push(keyframes[i]);
+      }
+    }
+
+    setKeyframes(newKeyframes);
     console.log(
-      `filteredColumns: ${filteredColumns}, selectedKeyframe: ${selectedKeyframe}`
+      `newKeyframes: ${newKeyframes}, selectedKeyframe: ${selectedKeyframe}`
     );
   };
+
+  // STATE NEEDS TO BE LIFTED FROM KEYFRAME AND PROMPT COLUMN
+  // INTO ANIMATION TABLE
+  // OR CHANGE THE LOCAL STORAGE FROM WITHIN THE COMPONENTS?
 
   return (
     <div className="container">
@@ -81,11 +93,12 @@ const AnimationTable = () => {
       />
 
       {/* display keyframe columns  */}
-      {keyframes.map((keyframe) => (
+      {keyframes.map((keyframe, index) => (
         <KeyframeColumn
           prompts={prompts}
           deleteKeyframeHandler={deleteKeyframeHandler}
           keyframe={keyframe}
+          index={index}
           key={Math.floor(Math.random() * 10000) + 1}
         />
       ))}
