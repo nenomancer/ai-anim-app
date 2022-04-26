@@ -46,7 +46,7 @@ const AnimationTable = () => {
     if (savedKeyframes) {
       return JSON.parse(savedKeyframes);
     } else {
-      return ["0", "50", "100", "150"];
+      return keyframes;
     }
   });
 
@@ -72,17 +72,8 @@ const AnimationTable = () => {
         newKeyframes.push(keyframes[i]);
       }
     }
+    setKeyframes(newKeyframes);
   };
-
-  // KEYFRAME VALUES:
-
-  const [keyframeValues, setKeyframeValues] = useState(() => {
-    const keyframes = [];
-    for (let i = 1; i <= prompts.length; i++) {
-      keyframes.push("0");
-    }
-    return keyframes;
-  });
 
   // STATE NEEDS TO BE LIFTED FROM KEYFRAME AND PROMPT COLUMN
   // INTO ANIMATION TABLE
@@ -106,8 +97,7 @@ const AnimationTable = () => {
           setKeyframes={setKeyframes}
           keyframe={keyframe}
           deleteKeyframeHandler={deleteKeyframeHandler}
-          keyframeValues={keyframeValues}
-          setKeyframeValues={setKeyframeValues}
+          
         />
       ))}
       <button onClick={addKeyframeHandler}>Add Keyframe</button>

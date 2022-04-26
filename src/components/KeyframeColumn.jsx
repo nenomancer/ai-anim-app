@@ -3,19 +3,37 @@ import InlineEdit from "./InlineEdit";
 import Keyframe from "./Keyframe";
 
 const KeyframeColumn = (props) => {
-  // INITIALIZING KEYFRAMES ARRAY
-  // const keyframes = [];
-  // for (let i = 1; i <= props.prompts.length; i++) {
-  //   keyframes.push("0");
-  // }
-  // USING KEYFRAMES ARRAY AS DEFAULT STATE
-  // const [keyframeValues, setKeyframeValues] = useState(() => {
-  //   const keyframes = [];
-  //   for (let i = 1; i <= props.prompts.length; i++) {
-  //     keyframes.push("0");
+  // class Keyframe {
+  //   constructor(key, frames) {
+  //     this.key = key,
+  //     this.frames = [frames]
   //   }
-  //   return keyframes;
-  // });
+  // }
+
+  
+  // KEYFRAME VALUES:
+  const defaultArray = [];
+  for (var i = 0; i < props.prompts.length; i++) {
+    defaultArray.push(i);
+  }
+
+  const keyFrames = [props.keyframes[props.index], ...defaultArray];
+  console.log(`frame: ${keyFrames[0]} key: ${keyFrames.splice(1)}`);
+
+  // LOAD KEYFRAME VALUES FROM LOCAL STORAGE
+  const [keyframeValues, setKeyframeValues] = useState(() => {
+    const savedKeyframeValues = localStorage.getItem("keyframeValues");
+    if (savedKeyframeValues) {
+      return JSON.parse(savedKeyframeValues);
+    } else {
+      return defaultArray;
+    }
+  });
+
+  // SAVE KEYFRAME VALUES TO LOCAL STORAGE
+  useEffect(() => {
+    localStorage.setItem("keyframeValues", JSON.stringify(keyframeValues));
+  }, [keyframeValues]);
 
   // -------------------------------------------------------------------------------
 
@@ -35,7 +53,7 @@ const KeyframeColumn = (props) => {
         <InlineEdit
           keyframes={props.keyframes}
           setKeyframes={props.setKeyframes}
-          index = {props.index}
+          index={props.index}
           className="keyframe-frame"
           type="number"
           size="1"
@@ -45,13 +63,13 @@ const KeyframeColumn = (props) => {
       </div>
       {/* SHOW KEYFRAME VALUES  */}
       <div className="keyframe-container">
-        {props.keyframeValues.map((value, index) => (
+        {keyframeValues.map((value, index) => (
           <Keyframe
             key={Math.random()}
             index={index}
             value={value}
-            keyframeValues={props.keyframeValues}
-            setKeyframeValues={props.setKeyframeValues}
+            keyframeValues={keyframeValues}
+            setKeyframeValues={setKeyframeValues}
             className="keyframe"
           />
         ))}
