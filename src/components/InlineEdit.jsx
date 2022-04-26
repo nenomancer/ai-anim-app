@@ -1,13 +1,12 @@
 import react from "react";
 
 const InlineEdit = (props) => {
-  const dataType = props.dataType;
+  const dataType = props.className;
   const onChange = (e) => {
     props.setValue(e.target.value);
   };
 
   const onKeyDown = (e) => {
-    console.log(e.target.value);
     if (e.key === "Enter") {
       if (dataType === "prompts-new") {
         props.setPrompts([...props.prompts, props.value]);
@@ -19,21 +18,22 @@ const InlineEdit = (props) => {
         props.prompts[props.index] = e.target.value;
         props.setPrompts([...props.prompts]);
       }
+      if (dataType === "keyframe-frame") {
+        props.setValue(props.value);
+        props.keyframes[props.index] = e.target.value;
+        props.setKeyframes([...props.keyframes]);
+      }
+      if (dataType === "keyframe-value") {
+        console.log(props.index);
+        props.setValue(props.value);
+        props.keyframeValues[props.index] = e.target.value;
+        props.setKeyframeValues([...props.keyframeValues]);
+      }
     }
-    // if (dataType === "newPrompt") {
-    //   if (e.key === "Enter") {
-    //     props.setPrompts([...props.prompts, props.value]);
-    //     e.target.blur();
-    //     props.setValue("");
-    //   }
-    // } else {
-    //   if (e.key === "Enter" || e.key === "Escape") {
-    //     e.target.blur();
-    //     props.setValue(props.value)
-    //   } else {
-    //       props.setValue(e.target.value);
-    //   }
-    // }
+  };
+
+  const onClick = (e) => {
+    e.target.select();
   };
 
   return (
@@ -45,6 +45,7 @@ const InlineEdit = (props) => {
         value={props.value}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onClick={onClick}
       />
     </div>
   );

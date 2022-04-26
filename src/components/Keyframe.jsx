@@ -10,9 +10,11 @@ const Keyframe = (props) => {
       name="key"
       size="1"
       maxLength="2"
+      keyframeValues={props.keyframeValues}
+      setKeyframeValues={props.setKeyframeValues}
       value={value}
       setValue={setValue}
-      dataType="keyframe-value"
+      className="keyframe-value"
     />
   );
 };

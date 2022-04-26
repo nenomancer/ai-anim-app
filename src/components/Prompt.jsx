@@ -19,7 +19,7 @@ const Prompt = (props) => {
         prompts={props.prompts}
         setPrompts={props.setPrompts}
         type="text"
-        dataType="prompts-value"
+        className="prompts-value"
       />
     </div>
   );

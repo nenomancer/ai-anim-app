@@ -4,6 +4,7 @@ import KeyframeColumn from "./KeyframeColumn";
 import PromptColumn from "./PromptColumn";
 
 const AnimationTable = () => {
+  // PROMPTS:
   // STATE TO KEEP TRACK OF PROMPTS
   const [prompts, setPrompts] = useState(() => {
     // USE SAVED PROMPTS AS DEFAULT STATE
@@ -14,10 +15,6 @@ const AnimationTable = () => {
       return ["prompt1", "prompt2"];
     }
   });
-
-  // STATE TO KEEP TRACK OF INDIVIDUAL PROMPT TEXT
-  // THIS NEEDS TO BE WORKED ON
-  const [promptText, setPromptText] = useState("");
 
   // SAVE PROMPTS TO LOCAL STORAGE:
   useEffect(() => {
@@ -40,6 +37,9 @@ const AnimationTable = () => {
     setPrompts(filteredPrompts);
   };
 
+  // --------------------------------------------------------------------------------
+
+  // KEYFRAMES:
   // STATE TO KEEP TRACK OF KEYFRAMES
   const [keyframes, setKeyframes] = useState(() => {
     const savedKeyframes = localStorage.getItem("keyframes");
@@ -53,7 +53,6 @@ const AnimationTable = () => {
   // SAVE KEYFRAMES TO LOCAL STORAGE
   useEffect(() => {
     localStorage.setItem("keyframes", JSON.stringify(keyframes));
-    console.log("Keyframe has been changed");
   }, [keyframes]);
 
   // ADD KEYFRAME
@@ -73,12 +72,17 @@ const AnimationTable = () => {
         newKeyframes.push(keyframes[i]);
       }
     }
-
-    setKeyframes(newKeyframes);
-    console.log(
-      `newKeyframes: ${newKeyframes}, selectedKeyframe: ${selectedKeyframe}`
-    );
   };
+
+  // KEYFRAME VALUES:
+
+  const [keyframeValues, setKeyframeValues] = useState(() => {
+    const keyframes = [];
+    for (let i = 1; i <= prompts.length; i++) {
+      keyframes.push("0");
+    }
+    return keyframes;
+  });
 
   // STATE NEEDS TO BE LIFTED FROM KEYFRAME AND PROMPT COLUMN
   // INTO ANIMATION TABLE
@@ -95,21 +99,24 @@ const AnimationTable = () => {
       {/* display keyframe columns  */}
       {keyframes.map((keyframe, index) => (
         <KeyframeColumn
-          prompts={prompts}
-          deleteKeyframeHandler={deleteKeyframeHandler}
-          keyframe={keyframe}
-          index={index}
           key={Math.floor(Math.random() * 10000) + 1}
+          index={index}
+          prompts={prompts}
+          keyframes={keyframes}
+          setKeyframes={setKeyframes}
+          keyframe={keyframe}
+          deleteKeyframeHandler={deleteKeyframeHandler}
+          keyframeValues={keyframeValues}
+          setKeyframeValues={setKeyframeValues}
         />
       ))}
       <button onClick={addKeyframeHandler}>Add Keyframe</button>
-      {/* <div className="animation-result">
+      <div className="animation-result">
         <p>
-          {keyframes[0].frame}:({prompts[0].text}: 1 | {prompts[1].text}: 0 |{" "}
-          {prompts[2].text}: 0), {keyframes[1].frame}:({prompts[0].text}: 0 |{" "}
-          {prompts[1].text}: 1 | {prompts[2].text}: 0)
+          {keyframes[0]}:({prompts[0]}: 1 | {prompts[1]}: 0 | {prompts[2]}: 0),{" "}
+          {keyframes[1]}:({prompts[0]}: 0 | {prompts[1]}: 1 | {prompts[2]}: 0)
         </p>
-      </div> */}
+      </div>
       {/* displaying the first keyframe column */}
     </div>
   );

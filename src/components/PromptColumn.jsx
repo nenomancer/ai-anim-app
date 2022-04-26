@@ -27,13 +27,11 @@ const PromptColumn = (props) => {
           <InlineEdit
             type="text"
             placeholder="Enter a new Prompt"
-            tag="newPrompt"
             className="prompts-new"
             prompts={props.prompts}
             setPrompts={props.setPrompts}
             value={newPrompt}
             setValue={setNewPrompt}
-            dataType="prompts-new"
           />
         </div>
       </div>
